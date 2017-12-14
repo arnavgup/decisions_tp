@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Group Status</title>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.js"   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="   crossorigin="anonymous"></script>
+        
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <%- link %>
+
+
+  <script>
+
+$(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+
+var xmlhttp = new XMLHttpRequest();
+      
+var url = "https://developers.zomato.com/api/v2.1/search?entity_id=1081&entity_type=city&cuisines=" + <%= cuisine%>
+
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        console.log(myArr.restaurants);
+        myFunction(myArr.restaurants);
+    }
+};
+
+xmlhttp.open("GET", url, true);
+xmlhttp.setRequestHeader("user-key", "218362c6e6575ca55071c678b60668c0")
+xmlhttp.send();
+
+function myFunction(arr) {
+    function register(arr){
+        var printThis = "";
+        console.log(arr);
+        var i = 0;
+        var k = 0;
+        while(k < 3){
+
+          if(arr[i].restaurant.featured_image != "" || i > 6){
+            printThis += `<div class="col s4"> <div class="card small">
+                <div class="card-image">`;
+                if(arr[i].restaurant.featured_image == ""){
+            printThis += '<img src="https://ak0.picdn.net/shutterstock/videos/17729350/thumb/1.jpg">';
+            } else {
+              printThis += '<img src="' + arr[i].restaurant.featured_image + '">';}
+
+            printThis += '<span class="card-title">' + arr[i].restaurant.name+ '</span>';
+            printThis += '</div> <div class="card-content"> <p> <b>Address:</b>' + arr[i].restaurant.location.address
+ +" <br> <b> Average cost of two: </b>"+ arr[i].restaurant.average_cost_for_two
+ +"</p> </div>";
+            printThis += '<div class="card-action"> <a href="' + arr[i].restaurant.url + '" target="_blank" >Review</a> <a href="' + arr[i].restaurant.menu_url
+ +'" target="_blank">Menu</a> </div> </div> </div>';
+            k++;
+          }
+          i++;
+            
+        }
+        document.getElementById('results').innerHTML = printThis;
+    }
+register(arr);}
+
+
+  </script>
+
+    </head>
+    <body>
+         <nav>
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo center"> Decisions &#8734;</a>
+          <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="/reset">New plan</a></li>
+            <li><a href="/membersOnly">Update choice</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class = "container">
+        <div class="row section"> 
+            <blockquote>
+              <h4>
+      <p>Welcome <div id = "name"><%= member %> </div></p></h4>
+    </blockquote>       
+          
+        </div>
+      
+        <div class="row">
+          <blockquote><h5>
+          Status and location of your friends:</h5>
+        </blockquote>
+
+       <ul class="collection">
+
+        <% for (var key in data) { %>
+          <li class="collection-item avatar" class="card-panel teal lighten-2">
+            <% if (data[key].last_cuisine == "") {%>
+<!--             <i class="material-icons circle red">play_arrow</i>
+ --> 
+                <div class="preloader-wrapper small active circle">
+                <div class="spinner-layer spinner-blue">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+
+                <div class="spinner-layer spinner-red">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+
+                <div class="spinner-layer spinner-yellow">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+
+                <div class="spinner-layer spinner-green">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+        
+            <span class="title"><%= data[key].username%></span>
+            <p>Response pending <br>
+
+
+            <% } else {%>
+            <i class="material-icons circle green">check</i>
+            
+            <span class="title"><%= data[key].username%></span>
+            <p>His choices:<%= cid[data[key].last_cuisine] %>, <%= cid[data[key].last_cuisine_two] %> <br>
+               <%- maps[key]%>
+
+             <% } %>
+
+            </p>
+          </li>
+          <% } %>
+        </ul>
+        </div>
+     
+      <div class="row section">
+        <blockquote><h5>
+          Free timeslots of your friends:
+        </blockquote></h5>
+      <div id = "time"></div>
+    </div>
+
+    <div class="row section">
+      <blockquote><h5>
+          Restuarant Recommendations:
+        </blockquote></h5>
+      <p id="results"></p>
+    </div>
+ 
+
+  <div class="row section">
+          <blockquote><h5>
+          Tell your online friends what you think:
+        </blockquote></h5>
+          Say something to the online friends (<span id="numPlayers">no</span> friends online right now):
+          <div class="input-field inline">
+            <input type="text" name="msg" id = "msg">
+            
+          </div>
+          <button type="button" onclick="broadcast()" class="waves-effect waves-light btn">Send!</button>
+          <blockquote><h6>
+        Messages:
+        <p id="best"></p>
+        </blockquote></h6>
+        
+      </div>
+       </div>
+
+
+
+    </body>
+    <!-- https://developers.google.com/chart/interactive/docs/gallery/timeline --> 
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+          console.log(document.getElementById('time'))
+        google.charts.load("current", {packages:["timeline"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+
+          var container = document.getElementById('time');
+          var chart = new google.visualization.Timeline(container);
+          var dataTable = new google.visualization.DataTable();
+
+          dataTable.addColumn({ type: 'string', id: 'serial' });
+          dataTable.addColumn({ type: 'string', id: 'Person' });
+          dataTable.addColumn({ type: 'date', id: 'Start' });
+          dataTable.addColumn({ type: 'date', id: 'End' });
+          <% for (var key in times) { %>
+            <%- times[key] %><% } %>
+          var options = {
+            timeline: { showRowLabels: false }
+          };
+
+          chart.draw(dataTable, options);
+        }
+      });
+  </script>
+</html>

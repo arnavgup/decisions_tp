@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	  <title>Your choice</title>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.js"   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="   crossorigin="anonymous"></script>
+        
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+  <script>
+
+    var long = 0;
+    var lat = 0;
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    function showPosition(position) {
+        long = position.coords.longitude; 
+        lat = position.coords.latitude;
+    }
+
+    getLocation()
+
+    function cuisine(){
+    var time = $("#time").val();
+    var cuisine = $("#cuisine").val();
+    var timee = $("#timee").val();
+    var cuisinee = $("#cuisinee").val();
+    $.ajax({
+        url: `/user/${cuisine}/${time}/${cuisinee}/${timee}/${lat.toString()}/${long.toString()}`,
+        type: 'POST',
+        success: function(result) {
+           $('#message').html(result);
+          }
+        });
+     };
+
+  </script>
+
+	</head>
+	<body>
+
+         <nav>
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo center"> Decisions &#8734;</a>
+          <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="/reset">New plan</a></li>
+            <li><a href="/groupinfo">Group Status</a></li>
+          </ul>
+        </div>
+      </nav>
+        <div class="container">
+           <div class="row">
+
+        
+        <blockquote><h5>
+          <p>Welcome <%= member %>, please fill in the form!</p>
+
+        </blockquote></h5>
+
+		
+		
+</div>
+
+        <div class="row">
+
+        <form >
+  
+         
+            <select class="icons" id="cuisine" required>
+              <option value="" disabled selected>Choice 1:</option>
+              <option value="148" data-icon="https://bigapplecurry.files.wordpress.com/2012/11/istock_000019639558_medium.jpg">Indian</option>
+              <option value="1" data-icon=" https://i.ytimg.com/vi/ATB-o2JSQ10/maxresdefault.jpg" class="circle">American</option>
+              <option value="182" data-icon="http://food.fnr.sndimg.com/content/dam/images/food/fullset/2010/3/23/0/0044833F4_banana-sour-cream-pancakes_s4x3.jpg.rend.hgtvcom.966.725.suffix/1487192608195.jpeg" class="circle">Breakfast</option>
+              <option value="25" data-icon="http://del.h-cdn.co/assets/17/24/768x512/gallery-1497458825-delish-shrimp-fried-rice-1-1024.jpg" class="circle">Chinese</option>
+              <option value="38" data-icon="https://media-cdn.tripadvisor.com/media/photo-s/0e/b5/08/fb/european-food.jpg" class="circle">European</option>
+              <option value="40" data-icon="http://www.executivefranchises.com/wp-content/uploads/2013/08/fast-food.jpg" class="circle">Fast Food</option>
+              <option value="55" data-icon="http://ichef.bbci.co.uk/food/ic/food_16x9_608/cuisines/east_european_16x9.jpg" class="circle">Italian</option>
+              <option value="73" data-icon="https://www.visitstockton.org/images/made/images/remote/https_files.idssasp.com/public/C102/0740e0c3-1adc-45f6-902c-e09b99d7a4ab/4cc8d671-c1b3-4114-8448-9274ffcb5379_768_432auto_s_c1.jpg" class="circle">Mexican</option>
+              <option value="177" data-icon="https://hoodwork-production.s3.amazonaws.com/uploads/story/image/36552/suchi.jpg" class="circle">Sushi</option>
+            </select>
+
+            <select class="icons" id="cuisinee" required>
+              <option value="" disabled selected>Choice 2:</option>
+              <option value="148" data-icon="https://bigapplecurry.files.wordpress.com/2012/11/istock_000019639558_medium.jpg">Indian</option>
+              <option value="1" data-icon=" https://i.ytimg.com/vi/ATB-o2JSQ10/maxresdefault.jpg" class="circle">American</option>
+              <option value="182" data-icon="http://food.fnr.sndimg.com/content/dam/images/food/fullset/2010/3/23/0/0044833F4_banana-sour-cream-pancakes_s4x3.jpg.rend.hgtvcom.966.725.suffix/1487192608195.jpeg" class="circle">Breakfast</option>
+              <option value="25" data-icon="http://del.h-cdn.co/assets/17/24/768x512/gallery-1497458825-delish-shrimp-fried-rice-1-1024.jpg" class="circle">Chinese</option>
+              <option value="38" data-icon="https://media-cdn.tripadvisor.com/media/photo-s/0e/b5/08/fb/european-food.jpg" class="circle">European</option>
+              <option value="40" data-icon="http://www.executivefranchises.com/wp-content/uploads/2013/08/fast-food.jpg" class="circle">Fast Food</option>
+              <option value="55" data-icon="http://ichef.bbci.co.uk/food/ic/food_16x9_608/cuisines/east_european_16x9.jpg" class="circle">Italian</option>
+              <option value="73" data-icon="https://www.visitstockton.org/images/made/images/remote/https_files.idssasp.com/public/C102/0740e0c3-1adc-45f6-902c-e09b99d7a4ab/4cc8d671-c1b3-4114-8448-9274ffcb5379_768_432auto_s_c1.jpg" class="circle">Mexican</option>
+              <option value="177" data-icon="https://hoodwork-production.s3.amazonaws.com/uploads/story/image/36552/suchi.jpg" class="circle">Sushi</option>
+            </select>
+            <br>
+
+            When do get free? <br>
+            From:
+            <input type="text" class="timepicker" id="time" required>
+            To:
+            <input type="text" class="timepicker" id="timee" required>
+         
+
+         </form>
+      
+<br>
+        <blockquote><h5>
+          You current location will also be recorded:
+        </blockquote></h5>
+      
+      <div id = "map"> </div>
+
+      <br>
+
+      <button type="button" onclick="cuisine()" class="waves-effect waves-light btn">Send your choice</button>
+      <br>
+
+
+        <blockquote><h5>
+          <div id="message"></div>
+        </blockquote></h5>
+      
+
+      <input type=button onClick="location.href='/groupInfo'" value='Your group info' class="waves-effect waves-light btn">
+
+   </div>
+</div>
+      
+     <script>
+
+      $(document).ready(function() {
+
+      var x = document.getElementById("map");
+
+      function getLocation() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+          } else {
+              x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+      }
+
+      function showPosition(position) {
+          x.innerHTML = "Latitude: " + position.coords.latitude + 
+          "<br>Longitude: " + position.coords.longitude; 
+          x.innerHTML = `<iframe src = "https://maps.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&hl=es;z=14&amp;output=embed"></iframe>`
+
+      }
+
+      getLocation()
+
+      $('select').material_select();
+
+        $('.timepicker').pickatime({
+              default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+              fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+              twelvehour: false, // Use AM/PM or 24-hour format
+              donetext: 'OK', // text for done-button
+              cleartext: 'Clear', // text for clear-button
+              canceltext: 'Cancel', // Text for cancel-button
+              autoclose: false, // automatic close timepicker
+              ampmclickable: true, // make AM PM clickable
+              aftershow: function(){} //Function for after opening timepicker
+            });
+    });
+
+  </script> 
+	</body>
+</html>
